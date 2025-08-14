@@ -70,23 +70,23 @@ function updateDisplay() {
 
   document.getElementById("quota").textContent = `Level ${level} → Rage at least ${quota} time(s) per long rest.`;
 
-  // Withdrawal effects
+  // Withdrawal effects (cumulative)
   let effects = [];
   if (rages < quota) {
-    if (level <= 5) effects.push("Unsettled Form: Disadvantage on initiative rolls.");
-    if (level >= 6 && level <= 10) effects.push("Primal Urge: DC 10 Wisdom save or frightened of nearest enemy at start of combat.");
-    if (level >= 11 && level <= 15) effects.push("Internal Volatility: Disadvantage on CON saves and -10 ft speed.");
+    if (level >= 1) effects.push("Unsettled Form: Disadvantage on initiative rolls.");
+    if (level >= 6) effects.push("Primal Urge: DC 10 Wisdom save or frightened of nearest enemy at start of combat.");
+    if (level >= 11) effects.push("Internal Volatility: Disadvantage on CON saves and -10 ft speed.");
     if (level >= 16) effects.push("Mental Corruption: Disadvantage on WIS and CHA saves.");
   } else {
     effects.push("None — Quota met!");
   }
   document.getElementById("effects").innerHTML = effects.map(e => `<p>${e}</p>`).join("");
 
-  // Augmented Fury benefits
+  // Augmented Fury benefits (cumulative)
   let benefits = [];
-  if (level <= 5) benefits.push("Bolstered Resilience: Resistance to one damage type (except B/P/S) until rage ends.");
-  if (level >= 6 && level <= 10) benefits.push("Overcharged Metabolism: Once per turn on hit, regain HP equal to proficiency bonus.");
-  if (level >= 11 && level <= 15) benefits.push("Adaptive Physiology: Once per rage, reaction to gain temp HP = barbarian level.");
+  if (level >= 1) benefits.push("Bolstered Resilience: Resistance to one damage type (except B/P/S) until rage ends.");
+  if (level >= 6) benefits.push("Overcharged Metabolism: Once per turn on hit, regain HP equal to proficiency bonus.");
+  if (level >= 11) benefits.push("Adaptive Physiology: Once per rage, reaction to gain temp HP = barbarian level.");
   if (level >= 16) benefits.push("Transcendence of Flesh: Immune to poisoned/frightened, adv. on saves vs condition spells/effects.");
   document.getElementById("benefits").innerHTML = benefits.map(b => `<p>${b}</p>`).join("");
 
