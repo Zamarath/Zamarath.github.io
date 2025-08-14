@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D&D Tracker</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #eee; }
+  input, textarea { margin: 5px 0; padding: 8px; border-radius: 5px; border: none; }
+  textarea { width: 100%; height: 80px; }
+  label { display: block; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>D&D Tracker</h1>
+
+<label>Player Name:
+  <input type="text" id="playerName">
+</label>
+
+<label>HP:
+  <input type="number" id="hp">
+</label>
+
+<label>Status:</label>
+<label><input type="radio" name="status" value="alive"> Alive</label>
+<label><input type="radio" name="status" value="dead"> Dead</label>
+
+<label>Notes:
+  <textarea id="notes"></textarea>
+</label>
+
+<script>
+  // Load saved values on page load
+  window.addEventListener("load", () => {
+    document.querySelectorAll("input, textarea").forEach(el => {
+      const key = el.id || (el.name + "-" + el.value);
+      const saved = localStorage.getItem(key);
+      if (saved !== null) {
+        if (el.type === "radio") {
+          el.checked = saved === "true";
+        } else {
+          el.value = saved;
+        }
+      }
+    });
+  });
+
+  // Save values when changed
+  document.querySelectorAll("input, textarea").forEach(el => {
+    el.addEventListener("input", () => {
+      const key = el.id || (el.name + "-" + el.value);
+      if (el.type === "radio") {
+        localStorage.setItem(key, el.checked);
+      } else {
+        localStorage.setItem(key, el.value);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
