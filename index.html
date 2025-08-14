@@ -93,6 +93,12 @@
     .effects p, .benefits p {
         margin: 5px 0;
     }
+
+    .effects p.active {
+        color: #ff6666;
+        font-weight: bold;
+    }
+    
 </style>
 </head>
 <body>
@@ -178,7 +184,8 @@ function updateDisplay() {
     } else {
         effects.push("None — Quota met!");
     }
-    document.getElementById("effects").innerHTML = effects.map(e => `<p>${e}</p>`).join("");
+    document.getElementById("effects").innerHTML = effects.map(e => `<p class="${e,active ? 'active' : ''}">${e.text}</p>`
+    ).join("");
 
     // Cumulative Augmented Fury benefits
     let benefits = [];
