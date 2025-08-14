@@ -3,121 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Experimenter's Hunger Tracker</title>
+<title>Sem the Experiement</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #121212; color: #eee; padding: 20px; max-width: 600px; margin: auto; }
-  h1, h2 { color: #ffcc66; }
-  label { display: block; margin-top: 10px; }
-  input, select, button { margin-top: 5px; padding: 5px; font-size: 1rem; }
-  .effects, .benefits { background: #1e1e1e; padding: 10px; border-radius: 8px; margin-top: 10px; }
-  .warning { color: #ff6666; font-weight: bold; }
+    @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Roboto:wght@400;700&display=swap');
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f9f4e7;
+        color: #2b2b2b;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px;
+        background: #5e4632;
+        color: #fdf5e6;
+        font-family: 'Uncial Antiqua', cursive;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        border-bottom: 5px solid #3e2f23;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .section {
+        background: #fff8dc;
+        border: 2px solid #3e2f23;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .section h2 {
+        font-family: 'Uncial Antiqua', cursive;
+        font-size: 1.5rem;
+        color: #3e2f23;
+        margin-top: 0;
+        border-bottom: 2px solid #3e2f23;
+        padding-bottom: 5px;
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #3e2f23;
+        border-radius: 4px;
+        background: #fdfaf3;
+    }
+
+    .radio-group {
+        margin: 8px 0;
+    }
+
+    .radio-group label {
+        display: inline-block;
+        margin-right: 15px;
+        font-weight: normal;
+    }
+
+    button {
+        background: #5e4632;
+        color: #fdf5e6;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Uncial Antiqua', cursive;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background: #3e2f23;
+    }
+
+    .effects p, .benefits p {
+        margin: 5px 0;
+    }
 </style>
 </head>
 <body>
 
-<h1>The Experimenter's Hunger</h1>
+<header>Sem the Experiment</header>
+<div class="container">
 
-<label>Barbarian Level:
-  <input type="number" id="level" min="1" max="20">
-</label>
+    <div class="section">
+        <h2>Character Info</h2>
+        <label>Character Name</label>
+        <input type="text" id="charName">
 
-<label>Rages Used This Long Rest:
-  <input type="number" id="ragesUsed" min="0">
-</label>
+        <label>Barbarian Level</label>
+        <input type="number" id="level" min="1" max="20">
+    </div>
 
-<label>Consecutive Failed Long Rests:
-  <input type="number" id="failedRests" min="0">
-</label>
+    <div class="section">
+        <h2>Tracker</h2>
+        <label>Rages Used This Long Rest</label>
+        <input type="number" id="ragesUsed" min="0">
 
-<button id="longRestBtn">Finish Long Rest</button>
+        <label>Consecutive Failed Long Rests</label>
+        <input type="number" id="failedRests" min="0">
 
-<h2>Rage Quota</h2>
-<p id="quota"></p>
+        <button id="longRestBtn">Finish Long Rest</button>
+    </div>
 
-<h2>Current Withdrawal Effects</h2>
-<div class="effects" id="effects"></div>
+    <div class="section">
+        <h2>Rage Quota</h2>
+        <p id="quota"></p>
+    </div>
 
-<h2>Augmented Fury Benefits</h2>
-<div class="benefits" id="benefits"></div>
+    <div class="section">
+        <h2>Current Withdrawal Effects</h2>
+        <div class="effects" id="effects"></div>
+    </div>
+
+    <div class="section">
+        <h2>Augmented Fury Benefits</h2>
+        <div class="benefits" id="benefits"></div>
+    </div>
+
+</div>
 
 <script>
 function saveData() {
-  localStorage.setItem("level", document.getElementById("level").value);
-  localStorage.setItem("ragesUsed", document.getElementById("ragesUsed").value);
-  localStorage.setItem("failedRests", document.getElementById("failedRests").value);
+    localStorage.setItem("charName", document.getElementById("charName").value);
+    localStorage.setItem("level", document.getElementById("level").value);
+    localStorage.setItem("ragesUsed", document.getElementById("ragesUsed").value);
+    localStorage.setItem("failedRests", document.getElementById("failedRests").value);
 }
 
 function loadData() {
-  document.getElementById("level").value = localStorage.getItem("level") || 1;
-  document.getElementById("ragesUsed").value = localStorage.getItem("ragesUsed") || 0;
-  document.getElementById("failedRests").value = localStorage.getItem("failedRests") || 0;
-  updateDisplay();
+    document.getElementById("charName").value = localStorage.getItem("charName") || "";
+    document.getElementById("level").value = localStorage.getItem("level") || 1;
+    document.getElementById("ragesUsed").value = localStorage.getItem("ragesUsed") || 0;
+    document.getElementById("failedRests").value = localStorage.getItem("failedRests") || 0;
+    updateDisplay();
 }
 
 function getQuota(level) {
-  if (level <= 2) return 1;
-  if (level <= 5) return 2;
-  if (level <= 11) return 3;
-  if (level <= 16) return 4;
-  return 5;
+    if (level <= 2) return 1;
+    if (level <= 5) return 2;
+    if (level <= 11) return 3;
+    if (level <= 16) return 4;
+    return 5;
 }
 
 function updateDisplay() {
-  const level = parseInt(document.getElementById("level").value) || 1;
-  const rages = parseInt(document.getElementById("ragesUsed").value) || 0;
-  const failed = parseInt(document.getElementById("failedRests").value) || 0;
-  const quota = getQuota(level);
+    const level = parseInt(document.getElementById("level").value) || 1;
+    const rages = parseInt(document.getElementById("ragesUsed").value) || 0;
+    const quota = getQuota(level);
 
-  document.getElementById("quota").textContent = `Level ${level} → Rage at least ${quota} time(s) per long rest.`;
+    document.getElementById("quota").textContent = `Level ${level} → Rage at least ${quota} time(s) per long rest.`;
 
-  // Withdrawal effects (cumulative)
-  let effects = [];
-  if (rages < quota) {
-    if (level >= 1) effects.push("Unsettled Form: Disadvantage on initiative rolls.");
-    if (level >= 6) effects.push("Primal Urge: DC 10 Wisdom save or frightened of nearest enemy at start of combat.");
-    if (level >= 11) effects.push("Internal Volatility: Disadvantage on CON saves and -10 ft speed.");
-    if (level >= 16) effects.push("Mental Corruption: Disadvantage on WIS and CHA saves.");
-  } else {
-    effects.push("None — Quota met!");
-  }
-  document.getElementById("effects").innerHTML = effects.map(e => `<p>${e}</p>`).join("");
+    // Cumulative withdrawal effects
+    let effects = [];
+    if (rages < quota) {
+        if (level >= 1) effects.push("Unsettled Form: Disadvantage on initiative rolls.");
+        if (level >= 6) effects.push("Primal Urge: DC 10 Wisdom save or frightened at start of combat.");
+        if (level >= 11) effects.push("Internal Volatility: Disadvantage on CON saves and -10 ft speed.");
+        if (level >= 16) effects.push("Mental Corruption: Disadvantage on WIS and CHA saves.");
+    } else {
+        effects.push("None — Quota met!");
+    }
+    document.getElementById("effects").innerHTML = effects.map(e => `<p>${e}</p>`).join("");
 
-  // Augmented Fury benefits (cumulative)
-  let benefits = [];
-  if (level >= 1) benefits.push("Bolstered Resilience: Resistance to one damage type (except B/P/S) until rage ends.");
-  if (level >= 6) benefits.push("Overcharged Metabolism: Once per turn on hit, regain HP equal to proficiency bonus.");
-  if (level >= 11) benefits.push("Adaptive Physiology: Once per rage, reaction to gain temp HP = barbarian level.");
-  if (level >= 16) benefits.push("Transcendence of Flesh: Immune to poisoned/frightened, adv. on saves vs condition spells/effects.");
-  document.getElementById("benefits").innerHTML = benefits.map(b => `<p>${b}</p>`).join("");
+    // Cumulative Augmented Fury benefits
+    let benefits = [];
+    if (level >= 1) benefits.push("Bolstered Resilience: Resistance to one damage type (except B/P/S) until rage ends.");
+    if (level >= 6) benefits.push("Overcharged Metabolism: Once per turn on hit, regain HP = proficiency bonus.");
+    if (level >= 11) benefits.push("Adaptive Physiology: Once per rage, reaction to gain temp HP = barbarian level.");
+    if (level >= 16) benefits.push("Transcendence of Flesh: Immune to poisoned/frightened, adv. on saves vs condition effects.");
+    document.getElementById("benefits").innerHTML = benefits.map(b => `<p>${b}</p>`).join("");
 
-  saveData();
+    saveData();
 }
 
 document.getElementById("level").addEventListener("input", updateDisplay);
 document.getElementById("ragesUsed").addEventListener("input", updateDisplay);
 document.getElementById("failedRests").addEventListener("input", updateDisplay);
+document.getElementById("charName").addEventListener("input", saveData);
 
 document.getElementById("longRestBtn").addEventListener("click", () => {
-  const level = parseInt(document.getElementById("level").value) || 1;
-  const rages = parseInt(document.getElementById("ragesUsed").value) || 0;
-  const quota = getQuota(level);
-  let failed = parseInt(document.getElementById("failedRests").value) || 0;
+    const level = parseInt(document.getElementById("level").value) || 1;
+    const rages = parseInt(document.getElementById("ragesUsed").value) || 0;
+    const quota = getQuota(level);
+    let failed = parseInt(document.getElementById("failedRests").value) || 0;
 
-  if (rages < quota) {
-    failed++;
-    alert(`Quota not met! Failed long rests in a row: ${failed}`);
-  } else {
-    failed = 0;
-    alert("Quota met! No withdrawal penalties next rest.");
-  }
+    if (rages < quota) {
+        failed++;
+        alert(`Quota not met! Failed long rests in a row: ${failed}`);
+    } else {
+        failed = 0;
+        alert("Quota met! No withdrawal penalties next rest.");
+    }
 
-  if (failed >= 3) {
-    alert("⚠ Permanent Level of Exhaustion gained due to addiction progression!");
-  }
+    if (failed >= 3) {
+        alert("⚠ Permanent Level of Exhaustion gained due to addiction progression!");
+    }
 
-  document.getElementById("failedRests").value = failed;
-  document.getElementById("ragesUsed").value = 0;
-  updateDisplay();
+    document.getElementById("failedRests").value = failed;
+    document.getElementById("ragesUsed").value = 0;
+    updateDisplay();
 });
 
 loadData();
