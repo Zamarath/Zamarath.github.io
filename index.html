@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sem the Experiement</title>
+<title>The Experimenter's Hunger Tracker</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Roboto:wght@400;700&display=swap');
 
     body {
         font-family: 'Roboto', sans-serif;
-        background: #f9f4e7;
-        color: #2b2b2b;
+        background: #1b1b1b;
+        color: #e0e0e0;
         margin: 0;
         padding: 0;
         line-height: 1.5;
@@ -19,12 +19,12 @@
     header {
         text-align: center;
         padding: 20px;
-        background: #5e4632;
-        color: #fdf5e6;
+        background: #2e1f14;
+        color: #f3d999;
         font-family: 'Uncial Antiqua', cursive;
         font-size: 2rem;
         letter-spacing: 2px;
-        border-bottom: 5px solid #3e2f23;
+        border-bottom: 4px solid #482f1b;
     }
 
     .container {
@@ -34,20 +34,20 @@
     }
 
     .section {
-        background: #fff8dc;
-        border: 2px solid #3e2f23;
+        background: #2a2a2a;
+        border: 2px solid #482f1b;
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 20px;
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.15);
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.5);
     }
 
     .section h2 {
         font-family: 'Uncial Antiqua', cursive;
         font-size: 1.5rem;
-        color: #3e2f23;
+        color: #f3d999;
         margin-top: 0;
-        border-bottom: 2px solid #3e2f23;
+        border-bottom: 2px solid #482f1b;
         padding-bottom: 5px;
     }
 
@@ -57,66 +57,52 @@
         font-weight: bold;
     }
 
-    input[type="text"], input[type="number"], textarea {
+    input[type="number"] {
         width: 100%;
         padding: 8px;
-        border: 1px solid #3e2f23;
+        border: 1px solid #482f1b;
         border-radius: 4px;
-        background: #fdfaf3;
-    }
-
-    .radio-group {
-        margin: 8px 0;
-    }
-
-    .radio-group label {
-        display: inline-block;
-        margin-right: 15px;
-        font-weight: normal;
+        background: #3a3a3a;
+        color: #e0e0e0;
     }
 
     button {
-        background: #5e4632;
-        color: #fdf5e6;
+        background: #482f1b;
+        color: #f3d999;
         border: none;
         padding: 8px 12px;
         border-radius: 4px;
         cursor: pointer;
         font-family: 'Uncial Antiqua', cursive;
         transition: background 0.3s;
+        margin-top: 10px;
     }
 
     button:hover {
-        background: #3e2f23;
+        background: #2e1f14;
+    }
+
+    .effects p.active {
+        color: #ff6666;   /* red for active withdrawal */
+        font-weight: bold;
     }
 
     .effects p, .benefits p {
         margin: 5px 0;
     }
-
-    .effects p.active {
-        color: #ff6666;
-        font-weight: bold;
-    }
-    
 </style>
 </head>
 <body>
 
-<header>Sem the Experiment</header>
+<header>The Experimenter's Hunger</header>
 <div class="container">
 
     <div class="section">
-        <h2>Character Info</h2>
-        <label>Character Name</label>
-        <input type="text" id="charName">
+        <h2>Tracker</h2>
 
         <label>Barbarian Level</label>
         <input type="number" id="level" min="1" max="20">
-    </div>
 
-    <div class="section">
-        <h2>Tracker</h2>
         <label>Rages Used This Long Rest</label>
         <input type="number" id="ragesUsed" min="0">
 
@@ -145,14 +131,12 @@
 
 <script>
 function saveData() {
-    localStorage.setItem("charName", document.getElementById("charName").value);
     localStorage.setItem("level", document.getElementById("level").value);
     localStorage.setItem("ragesUsed", document.getElementById("ragesUsed").value);
     localStorage.setItem("failedRests", document.getElementById("failedRests").value);
 }
 
 function loadData() {
-    document.getElementById("charName").value = localStorage.getItem("charName") || "";
     document.getElementById("level").value = localStorage.getItem("level") || 1;
     document.getElementById("ragesUsed").value = localStorage.getItem("ragesUsed") || 0;
     document.getElementById("failedRests").value = localStorage.getItem("failedRests") || 0;
@@ -174,17 +158,18 @@ function updateDisplay() {
 
     document.getElementById("quota").textContent = `Level ${level} → Rage at least ${quota} time(s) per long rest.`;
 
-    // Cumulative withdrawal effects
+    // Cumulative withdrawal effects with highlight
     let effects = [];
     if (rages < quota) {
-        if (level >= 1) effects.push("Unsettled Form: Disadvantage on initiative rolls.");
-        if (level >= 6) effects.push("Primal Urge: DC 10 Wisdom save or frightened at start of combat.");
-        if (level >= 11) effects.push("Internal Volatility: Disadvantage on CON saves and -10 ft speed.");
-        if (level >= 16) effects.push("Mental Corruption: Disadvantage on WIS and CHA saves.");
+        if (level >= 1) effects.push({text: "Unsettled Form: Disadvantage on initiative rolls.", active: true});
+        if (level >= 6) effects.push({text: "Primal Urge: DC 10 Wisdom save or frightened at start of combat.", active: true});
+        if (level >= 11) effects.push({text: "Internal Volatility: Disadvantage on CON saves and -10 ft speed.", active: true});
+        if (level >= 16) effects.push({text: "Mental Corruption: Disadvantage on WIS and CHA saves.", active: true});
     } else {
-        effects.push("None — Quota met!");
+        effects.push({text: "None — Quota met!", active: false});
     }
-    document.getElementById("effects").innerHTML = effects.map(e => `<p class="${e,active ? 'active' : ''}">${e.text}</p>`
+    document.getElementById("effects").innerHTML = effects.map(e => 
+        `<p class="${e.active ? 'active' : ''}">${e.text}</p>`
     ).join("");
 
     // Cumulative Augmented Fury benefits
@@ -201,7 +186,6 @@ function updateDisplay() {
 document.getElementById("level").addEventListener("input", updateDisplay);
 document.getElementById("ragesUsed").addEventListener("input", updateDisplay);
 document.getElementById("failedRests").addEventListener("input", updateDisplay);
-document.getElementById("charName").addEventListener("input", saveData);
 
 document.getElementById("longRestBtn").addEventListener("click", () => {
     const level = parseInt(document.getElementById("level").value) || 1;
